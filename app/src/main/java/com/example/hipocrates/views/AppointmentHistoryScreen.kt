@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,10 +33,10 @@ fun AppointmentHistoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Historial de Citas") },
+                title = { Text("Historial") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 },
                 actions = {
@@ -67,7 +68,7 @@ fun AppointmentHistoryScreen(
                 FilterChip(
                     selected = true,
                     onClick = { viewModel.setStatusFilter(null) },
-                    label = { Text("Filtro: ${statusFilter?.displayName}") },
+                    label = { Text("${statusFilter?.displayName}") },
                     trailingIcon = {
                         Icon(
                             Icons.Filled.Close,
@@ -94,9 +95,9 @@ fun AppointmentHistoryScreen(
                     EmptyStateView(
                         icon = Icons.Filled.SearchOff,
                         message = if (searchQuery.isNotBlank() || statusFilter != null) {
-                            "No se encontraron citas con los filtros aplicados"
+                            "No se encontraron citas"
                         } else {
-                            "No tienes citas registradas"
+                            "No tiene citas registradas"
                         },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -150,7 +151,7 @@ fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
-        placeholder = { Text("Buscar por médico, especialidad o motivo...") },
+        placeholder = {  },
         leadingIcon = {
             Icon(Icons.Filled.Search, contentDescription = null)
         },
@@ -173,7 +174,7 @@ fun FilterDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Filtrar por Estado") },
+        title = { Text("Filtrar") },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -189,7 +190,6 @@ fun FilterDialog(
                         label = status.displayName,
                         isSelected = currentFilter == status,
                         onClick = { onFilterSelected(status) },
-                        status = status
                     )
                 }
             }

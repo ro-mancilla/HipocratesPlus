@@ -158,7 +158,7 @@ fun LoginScreen(
                         )
                     } else {
                         Text(
-                            text = "Iniciar Sesión",
+                            text = "Iniciar sesión",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -171,14 +171,14 @@ fun LoginScreen(
                     onClick = onNavigateToRegister,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("¿No tienes cuenta? Regístrate")
+                    Text("¿No tiene cuenta? Regístrese aquí")
                 }
 
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(52.dp))
 
                 // Información adicional
                 Text(
-                    text = "Agenda tus citas médicas de forma rápida y sencilla",
+                    text = "CLINICA HIPÓCRATES S.A.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

@@ -6,6 +6,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.EventNote
+import androidx.compose.material.icons.automirrored.filled.Note
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -46,10 +49,10 @@ fun NewAppointmentScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Agendar Nueva Cita") },
+                title = { Text("") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
@@ -65,7 +68,7 @@ fun NewAppointmentScreen(
         ) {
             // Icono
             Icon(
-                imageVector = Icons.Filled.EventNote,
+                imageVector = Icons.AutoMirrored.Filled.EventNote,
                 contentDescription = null,
                 modifier = Modifier
                     .size(64.dp)
@@ -76,14 +79,14 @@ fun NewAppointmentScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Nueva Cita Médica",
+                text = "Nueva cita",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Text(
-                text = "Completa los datos para agendar tu cita",
+                text = "Complete los datos para agendar su cita:",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -95,7 +98,7 @@ fun NewAppointmentScreen(
             DatePickerField(
                 selectedDate = appointmentForm.fecha,
                 onDateSelected = { viewModel.updateAppointmentFecha(it) },
-                label = "Fecha de la cita",
+                label = "Fecha",
                 error = appointmentForm.fechaError
             )
 
@@ -105,7 +108,7 @@ fun NewAppointmentScreen(
             TimePickerField(
                 selectedTime = appointmentForm.hora,
                 onTimeSelected = { viewModel.updateAppointmentHora(it) },
-                label = "Hora de la cita",
+                label = "Hora",
                 error = appointmentForm.horaError
             )
 
@@ -159,7 +162,7 @@ fun NewAppointmentScreen(
                 value = appointmentForm.notas,
                 onValueChange = { viewModel.updateAppointmentNotas(it) },
                 label = "Notas adicionales (opcional)",
-                leadingIcon = Icons.Filled.Note,
+                leadingIcon = Icons.AutoMirrored.Filled.Note,
                 maxLines = 4,
                 singleLine = false,
                 keyboardOptions = KeyboardOptions(
@@ -210,7 +213,7 @@ fun NewAppointmentScreen(
                         tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Text(
-                        text = "Horario de atención: Lunes a Viernes de 8:00 a 18:00",
+                        text = "Nuestros horarios de atención son:\nLunes a Viernes de 8:00 a 18:00.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -233,10 +236,9 @@ fun NewAppointmentScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Icon(Icons.Filled.Check, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Agendar Cita",
+                        text = "Agendar cita",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

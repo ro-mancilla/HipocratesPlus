@@ -12,7 +12,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-// Estado de la UI
 data class UiState(
     val isLoading: Boolean = false,
     val currentUserEmail: String? = null,
@@ -24,7 +23,6 @@ data class UiState(
     val successMessage: String? = null
 )
 
-// Estados para formularios
 data class LoginFormState(
     val email: String = "",
     val password: String = "",
@@ -63,11 +61,9 @@ data class AppointmentFormState(
 
 class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
 
-    // Estado principal de la UI
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    // Estados de formularios
     private val _loginForm = MutableStateFlow(LoginFormState())
     val loginForm: StateFlow<LoginFormState> = _loginForm.asStateFlow()
 
@@ -77,7 +73,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     private val _appointmentForm = MutableStateFlow(AppointmentFormState())
     val appointmentForm: StateFlow<AppointmentFormState> = _appointmentForm.asStateFlow()
 
-    // Filtros para el historial
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -88,8 +83,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         loadCurrentUser()
         observeAppointments()
     }
-
-    // ============ GESTIÓN DE SESIÓN ============
 
     private fun loadCurrentUser() {
         viewModelScope.launch {
@@ -166,7 +159,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         _statusFilter.value = status
     }
 
-    // ============ AUTENTICACIÓN ============
 
     fun updateLoginEmail(email: String) {
         _loginForm.update { it.copy(email = email, emailError = null) }
@@ -179,7 +171,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     fun login(onSuccess: () -> Unit) {
         val form = _loginForm.value
 
-        // Validar formulario
         val emailError = validateEmail(form.email)
         val passwordError = validatePassword(form.password)
 
@@ -231,8 +222,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         }
     }
 
-    // ============ REGISTRO ============
-
     fun updateRegisterEmail(email: String) {
         _registerForm.update { it.copy(email = email, emailError = null) }
     }
@@ -266,9 +255,9 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         val confirmPasswordError = if (form.password != form.confirmPassword) {
             "Las contraseñas no coinciden"
         } else null
-        val nombreError = if (form.nombre.isBlank()) "El nombre es requerido" else null
-        val telefonoError = if (form.telefono.isBlank()) "El teléfono es requerido" else null
-        val identificacionError = if (form.identificacion.isBlank()) "La identificación es requerida" else null
+        val nombreError = if (form.nombre.isBlank()) "Ingrese su nombre completo" else null
+        val telefonoError = if (form.telefono.isBlank()) "Ingrese su número de teléfono" else null
+        val identificacionError = if (form.identificacion.isBlank()) "Ingrese su RUT" else null
 
         if (emailError != null || passwordError != null || confirmPasswordError != null ||
             nombreError != null || telefonoError != null || identificacionError != null) {
@@ -324,8 +313,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         }
     }
 
-    // ============ GESTIÓN DE CITAS ============
-
     fun updateAppointmentFecha(fecha: String) {
         _appointmentForm.update { it.copy(fecha = fecha, fechaError = null) }
     }
@@ -359,11 +346,10 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
             return
         }
 
-        // Validar formulario
         val fechaError = validateFecha(form.fecha)
         val horaError = validateHora(form.hora)
-        val especialidadError = if (form.especialidad == null) "Selecciona una especialidad" else null
-        val doctorError = if (form.doctorId.isBlank()) "Selecciona un médico" else null
+        val especialidadError = if (form.especialidad == null) "Seleccione una especialidad" else null
+        val doctorError = if (form.doctorId.isBlank()) "Seleccione un médico" else null
         val motivoError = if (form.motivo.isBlank()) "El motivo es requerido" else null
 
         if (fechaError != null || horaError != null || especialidadError != null ||
@@ -413,7 +399,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
             _uiState.update {
                 it.copy(
                     isLoading = false,
-                    successMessage = "Cita agendada exitosamente"
+                    successMessage = "Cita agendada exitosamente."
                 )
             }
             _appointmentForm.value = AppointmentFormState() // Limpiar formulario
@@ -435,7 +421,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                 )
                 dataStoreManager.updateAppointment(updated)
                 _uiState.update {
-                    it.copy(successMessage = "Cita actualizada exitosamente")
+                    it.copy(successMessage = "Cita actualizada exitosamente.")
                 }
             }
         }
@@ -449,16 +435,15 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         viewModelScope.launch {
             dataStoreManager.deleteAppointment(appointmentId)
             _uiState.update {
-                it.copy(successMessage = "Cita eliminada exitosamente")
+                it.copy(successMessage = "Cita eliminada exitosamente.")
             }
         }
     }
 
-    // ============ VALIDACIONES ============
 
     private fun validateEmail(email: String): String? {
         return when {
-            email.isBlank() -> "El email es requerido"
+            email.isBlank() -> "Ingrese un email"
             !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Email inválido"
             else -> null
         }
@@ -466,7 +451,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
 
     private fun validatePassword(password: String): String? {
         return when {
-            password.isBlank() -> "La contraseña es requerida"
+            password.isBlank() -> "Ingrese una contraseña"
             password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
             else -> null
         }
@@ -475,7 +460,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     private fun validateFecha(fecha: String): String? {
         return try {
             if (fecha.isBlank()) {
-                "La fecha es requerida"
+                "Ingrese una fecha"
             } else {
                 val date = LocalDate.parse(fecha)
                 if (date.isBefore(LocalDate.now())) {
@@ -492,10 +477,9 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     private fun validateHora(hora: String): String? {
         return try {
             if (hora.isBlank()) {
-                "La hora es requerida"
+                "Ingrese una hora"
             } else {
                 LocalTime.parse(hora)
-                // Validar horario de atención (8:00 - 18:00)
                 val time = LocalTime.parse(hora)
                 if (time.isBefore(LocalTime.of(8, 0)) || time.isAfter(LocalTime.of(18, 0))) {
                     "El horario de atención es de 8:00 a 18:00"
@@ -507,8 +491,6 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
             "Hora inválida"
         }
     }
-
-    // ============ UTILIDADES ============
 
     fun clearError() {
         _uiState.update { it.copy(error = null) }

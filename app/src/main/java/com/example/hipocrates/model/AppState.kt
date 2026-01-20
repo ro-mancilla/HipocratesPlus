@@ -3,7 +3,6 @@ package com.example.hipocrates.model
 import java.time.LocalDate
 import java.time.LocalTime
 
-// Usuario con información completa
 data class Usuario(
     val email: String,
     val password: String,
@@ -12,7 +11,6 @@ data class Usuario(
     val identificacion: String = ""
 )
 
-// Especialidades médicas disponibles
 enum class MedicalSpecialty(val displayName: String) {
     GENERAL("Medicina General"),
     CARDIOLOGY("Cardiología"),
@@ -26,7 +24,6 @@ enum class MedicalSpecialty(val displayName: String) {
     NEUROLOGY("Neurología")
 }
 
-// Médico disponible
 data class Doctor(
     val id: String,
     val nombre: String,
@@ -35,21 +32,19 @@ data class Doctor(
     val horarioFin: String = "18:00"
 )
 
-// Estados posibles de una cita
 enum class AppointmentStatus(val displayName: String, val color: String) {
-    PENDING("Pendiente", "#FFA500"),
-    CONFIRMED("Confirmada", "#4CAF50"),
-    COMPLETED("Completada", "#2196F3"),
-    CANCELLED("Cancelada", "#F44336"),
-    RESCHEDULED("Reprogramada", "#9C27B0")
+    PENDING("Pendiente", "#FFCF44"),
+    CONFIRMED("Confirmada", "#1EB980"),
+    COMPLETED("Completada", "#72DEFF"),
+    CANCELLED("Cancelada", "#FF6859"),
+    RESCHEDULED("Reprogramada", "#B15DFF")
 }
 
-// Cita médica
 data class Appointment(
     val id: String,
     val userEmail: String,
-    val fecha: String, // Formato: "yyyy-MM-dd"
-    val hora: String,  // Formato: "HH:mm"
+    val fecha: String,
+    val hora: String,
     val especialidad: MedicalSpecialty,
     val doctorId: String,
     val doctorNombre: String,
@@ -60,7 +55,6 @@ data class Appointment(
     val fechaModificacion: Long = System.currentTimeMillis()
 )
 
-// Médicos predefinidos del sistema
 object DoctorsRepository {
     val doctors = listOf(
         Doctor("1", "Dr. Juan Pérez", MedicalSpecialty.GENERAL),
