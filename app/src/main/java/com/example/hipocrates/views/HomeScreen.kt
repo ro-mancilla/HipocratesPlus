@@ -48,12 +48,12 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Hipócrates",
+                            text = "Hipócrates+",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Bienvenido/a, ${uiState.currentUser?.nombre ?: "Usuario"}",
+                            text = "Bienvenid@, ${uiState.currentUser?.nombre ?: "usuario"}",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -67,7 +67,7 @@ fun HomeScreen(
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Mi Perfil") },
+                            text = { Text("Perfil") },
                             onClick = {
                                 showMenu = false
                                 onNavigateToProfile()
@@ -77,7 +77,7 @@ fun HomeScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Cerrar Sesión") },
+                            text = { Text("Cerrar sesión") },
                             onClick = {
                                 showMenu = false
                                 showLogoutDialog = true
@@ -116,7 +116,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 QuickAccessCard(
-                    title = "Nueva Cita",
+                    title = "Nueva cita",
                     icon = Icons.Filled.Add,
                     onClick = onNavigateToNewAppointment,
                     modifier = Modifier.weight(1f)
@@ -133,7 +133,7 @@ fun HomeScreen(
 
             // Sección de próximas citas
             Text(
-                text = "Próximas Citas",
+                text = "Próximas citas",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(16.dp)
@@ -150,7 +150,7 @@ fun HomeScreen(
                 if (isEmpty) {
                     EmptyStateView(
                         icon = Icons.Filled.EventNote,
-                        message = "No tienes citas próximas.\n¡Agenda una nueva!",
+                        message = "No tiene citas",
                         modifier = Modifier.fillMaxSize()
                     )
                 } else {
@@ -186,9 +186,9 @@ fun HomeScreen(
     // Diálogo de confirmación de logout
     if (showLogoutDialog) {
         ConfirmationDialog(
-            title = "Cerrar Sesión",
-            message = "¿Estás seguro que deseas cerrar sesión?",
-            confirmText = "Sí, cerrar sesión",
+            title = "Cerrar sesión",
+            message = "¿Desea cerrar la sesión?",
+            confirmText = "Confirmar",
             dismissText = "Cancelar",
             onConfirm = {
                 showLogoutDialog = false

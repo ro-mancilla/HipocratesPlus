@@ -40,7 +40,7 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mi Perfil") },
+                title = { Text("Perfil") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
@@ -101,7 +101,7 @@ fun ProfileScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Información Personal",
+                        text = "Información personal",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -110,8 +110,8 @@ fun ProfileScreen(
 
                     ProfileInfoRow(
                         icon = Icons.Filled.Badge,
-                        label = "Identificación",
-                        value = user?.identificacion ?: "N/A"
+                        label = "RUT",
+                        value = user?.identificacion ?: "Desconocido"
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -143,7 +143,7 @@ fun ProfileScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Estadísticas de Citas",
+                        text = "Estadísticas de citas",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -184,13 +184,13 @@ fun ProfileScreen(
                             label = "Canceladas",
                             icon = Icons.Filled.Cancel
                         )
+
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Botón de cerrar sesión
             Button(
                 onClick = { showLogoutDialog = true },
                 modifier = Modifier.fillMaxWidth(),
@@ -207,19 +207,18 @@ fun ProfileScreen(
 
             // Información de la app
             Text(
-                text = "Hipócrates v1.0",
+                text = "Hipócrates+ 1.0",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Sistema de Gestión de Citas Médicas",
+                text = "CLINICA HIPÓCRATES S.A.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 
-    // Diálogo de confirmación de logout
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },

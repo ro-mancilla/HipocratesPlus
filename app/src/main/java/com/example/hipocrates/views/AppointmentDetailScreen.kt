@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -46,10 +47,10 @@ fun AppointmentDetailScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Detalle de Cita") },
+                    title = { Text("Información de cita") },
                     navigationIcon = {
                         IconButton(onClick = onNavigateBack) {
-                            Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                         }
                     }
                 )
@@ -69,10 +70,10 @@ fun AppointmentDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detalle de Cita") },
+                title = { Text("Información de cita") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
@@ -93,7 +94,7 @@ fun AppointmentDetailScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Estado de la cita",
+                    text = "Estado",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -156,8 +157,6 @@ fun AppointmentDetailScreen(
 
             if (appointment.notas.isNotBlank()) {
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Notas
                 DetailCard(
                     icon = Icons.Filled.Note,
                     title = "Notas adicionales",
@@ -167,7 +166,6 @@ fun AppointmentDetailScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Acciones según el estado
             when (appointment.estado) {
                 AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED -> {
                     Button(
@@ -178,9 +176,9 @@ fun AppointmentDetailScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             if (appointment.estado == AppointmentStatus.PENDING) {
-                                "Confirmar Cita"
+                                "Confirmar cita"
                             } else {
-                                "Cambiar Estado"
+                                "Cambiar estado"
                             }
                         )
                     }
@@ -196,10 +194,10 @@ fun AppointmentDetailScreen(
                     ) {
                         Icon(Icons.Filled.Cancel, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Cancelar Cita")
+                        Text("Cancelar cita")
                     }
                 }
-                AppointmentStatus.CANCELLED, AppointmentStatus.COMPLETED -> {
+                AppointmentStatus.CANCELLED, AppointmentStatus.COMPLETED, AppointmentStatus.RESCHEDULED -> {
                     OutlinedButton(
                         onClick = { showDeleteDialog = true },
                         modifier = Modifier.fillMaxWidth(),
@@ -209,45 +207,20 @@ fun AppointmentDetailScreen(
                     ) {
                         Icon(Icons.Filled.Delete, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Eliminar Cita")
+                        Text("Eliminar cita")
                     }
                 }
                 else -> {}
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Información de fechas
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Información del sistema",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "ID: ${appointment.id}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
         }
     }
 
-    // Diálogo de cancelación
     if (showCancelDialog) {
         ConfirmationDialog(
-            title = "Cancelar Cita",
-            message = "¿Estás seguro que deseas cancelar esta cita? Esta acción no se puede deshacer.",
-            confirmText = "Sí, cancelar",
-            dismissText = "No, mantener",
+            title = "Cancelar cita",
+            message = "¿Está seguro que desea cancelar su cita? Esta acción es irreversible.",
+            confirmText = "Sí",
+            dismissText = "No",
             onConfirm = {
                 viewModel.cancelAppointment(appointmentId)
                 showCancelDialog = false
@@ -256,13 +229,12 @@ fun AppointmentDetailScreen(
         )
     }
 
-    // Diálogo de eliminación
     if (showDeleteDialog) {
         ConfirmationDialog(
             title = "Eliminar Cita",
-            message = "¿Estás seguro que deseas eliminar esta cita del historial? Esta acción no se puede deshacer.",
-            confirmText = "Sí, eliminar",
-            dismissText = "Cancelar",
+            message = "¿Está seguro que desea eliminar su cita del historial? Esta acción es irreversible.",
+            confirmText = "Sí",
+            dismissText = "No",
             onConfirm = {
                 viewModel.deleteAppointment(appointmentId)
                 showDeleteDialog = false
@@ -272,7 +244,6 @@ fun AppointmentDetailScreen(
         )
     }
 
-    // Diálogo de cambio de estado
     if (showStatusDialog) {
         StatusChangeDialog(
             currentStatus = appointment.estado,
@@ -340,13 +311,13 @@ fun StatusChangeDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Cambiar Estado") },
+        title = { Text("Cambiar estado") },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    "Selecciona el nuevo estado de la cita:",
+                    "Seleccione el nuevo estado de su cita:",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))

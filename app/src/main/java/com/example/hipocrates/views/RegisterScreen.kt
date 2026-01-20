@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -43,10 +44,10 @@ fun RegisterScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crear Cuenta") },
+                title = { Text("") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
@@ -72,13 +73,13 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Regístrate",
+                text = "Registrarse",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "Completa tus datos para crear una cuenta",
+                text = "Complete sus datos para crear su cuenta",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -103,7 +104,7 @@ fun RegisterScreen(
             ValidatedTextField(
                 value = registerForm.identificacion,
                 onValueChange = { viewModel.updateRegisterIdentificacion(it) },
-                label = "Cédula/Identificación",
+                label = "RUT (Sín guión ni puntos)",
                 error = registerForm.identificacionError,
                 leadingIcon = Icons.Filled.Badge,
                 keyboardOptions = KeyboardOptions(
@@ -201,7 +202,14 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botón de registro
+            Text(
+                text = "Al registrarse en Hipocrátes+, usted acepta los términos y condiciones de CLINICA HIPÓCRATES S.A.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 onClick = { viewModel.register(onRegisterSuccess) },
                 modifier = Modifier
@@ -222,14 +230,6 @@ fun RegisterScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Información adicional
-            Text(
-                text = "Al registrarte, aceptas nuestros términos y condiciones",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
         }
     }
 }
