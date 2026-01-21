@@ -1,7 +1,6 @@
 package com.example.hipocrates.views
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.hipocrates.R
 import com.example.hipocrates.viewmodel.AppViewModel
 import com.example.hipocrates.views.components.ValidatedTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,10 +34,8 @@ fun LoginScreen(
     val loginForm by viewModel.loginForm.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    // Manejar mensajes
     LaunchedEffect(uiState.error) {
         uiState.error?.let {
-            // El error se muestra en la UI
         }
     }
 
@@ -60,9 +58,9 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Lock,
+                    painter = painterResource(id = R.mipmap.ic_launcher_hipocrates_monochrome),
                     contentDescription = null,
-                    modifier = Modifier.size(80.dp),
+                    modifier = Modifier.size(128.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
 
@@ -176,7 +174,6 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(52.dp))
 
-                // Información adicional
                 Text(
                     text = "CLINICA HIPÓCRATES S.A.",
                     style = MaterialTheme.typography.bodySmall,

@@ -33,7 +33,7 @@ fun ProfileScreen(
     val completedAppointments = uiState.appointments.count {
         it.estado == AppointmentStatus.COMPLETED
     }
-    val cancelledAppointments = uiState.appointments.count {
+    val cancelarledAppointments = uiState.appointments.count {
         it.estado == AppointmentStatus.CANCELLED
     }
 
@@ -111,7 +111,7 @@ fun ProfileScreen(
                     ProfileInfoRow(
                         icon = Icons.Filled.Badge,
                         label = "RUT",
-                        value = user?.identificacion ?: "Desconocido"
+                        value = user?.rut ?: "Desconocido"
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -180,7 +180,7 @@ fun ProfileScreen(
                         )
 
                         StatItem(
-                            value = cancelledAppointments.toString(),
+                            value = cancelarledAppointments.toString(),
                             label = "Canceladas",
                             icon = Icons.Filled.Cancel
                         )
@@ -205,7 +205,6 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Información de la app
             Text(
                 text = "Hipócrates+ 1.0",
                 style = MaterialTheme.typography.bodySmall,

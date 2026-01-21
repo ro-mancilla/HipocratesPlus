@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HipocratesApp(viewModel = viewModel, dataStoreManager = dataStoreManager)
+                    HipocratesPlus(viewModel = viewModel, dataStoreManager = dataStoreManager)
                 }
             }
         }
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HipocratesApp(
+fun HipocratesPlus(
     viewModel: AppViewModel,
     dataStoreManager: DataStoreManager
 ) {
@@ -62,7 +62,6 @@ fun HipocratesApp(
         }
     }
 
-    // Mostrar la navegación solo cuando se haya determinado la pantalla inicial
     startDestination?.let { destination ->
         AppNavigation(
             navController = navController,

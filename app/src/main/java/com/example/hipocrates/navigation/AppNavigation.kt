@@ -203,7 +203,6 @@ fun AppNavigation(
             )
         }
 
-        // Profile Screen
         composable(
             route = Screen.Profile.route,
             enterTransition = {

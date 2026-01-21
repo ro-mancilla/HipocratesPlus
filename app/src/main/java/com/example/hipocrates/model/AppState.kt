@@ -8,7 +8,7 @@ data class Usuario(
     val password: String,
     val nombre: String = "",
     val telefono: String = "",
-    val identificacion: String = ""
+    val rut: String = ""
 )
 
 enum class MedicalSpecialty(val displayName: String) {

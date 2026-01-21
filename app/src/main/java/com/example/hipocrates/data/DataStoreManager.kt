@@ -110,7 +110,7 @@ class DataStoreManager(private val context: Context) {
     }
 
     // Eliminar una cita
-    suspend fun deleteAppointment(appointmentId: String) {
+    suspend fun eliminarAppointment(appointmentId: String) {
         context.dataStore.edit { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"
             val type = object : TypeToken<List<Appointment>>() {}.type
@@ -120,7 +120,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Limpiar todos los datos (para logout)
     suspend fun clearAllData() {
         context.dataStore.edit { prefs ->
             prefs.clear()

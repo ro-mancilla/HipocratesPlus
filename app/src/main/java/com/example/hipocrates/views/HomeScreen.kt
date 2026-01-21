@@ -183,7 +183,6 @@ fun HomeScreen(
         }
     }
 
-    // Diálogo de confirmación de logout
     if (showLogoutDialog) {
         ConfirmationDialog(
             title = "Cerrar sesión",

@@ -222,7 +222,6 @@ fun NewAppointmentScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botón de guardar
             Button(
                 onClick = { viewModel.createAppointment(onAppointmentCreated) },
                 modifier = Modifier

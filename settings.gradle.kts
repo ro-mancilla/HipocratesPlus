@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "HipocratesApp"
+rootProject.name = "HipocratesPlus"
 include(":app")
- 

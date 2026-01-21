@@ -90,7 +90,7 @@ fun RegisterScreen(
             ValidatedTextField(
                 value = registerForm.nombre,
                 onValueChange = { viewModel.updateRegisterNombre(it) },
-                label = "Nombre Completo",
+                label = "Nombre completo",
                 error = registerForm.nombreError,
                 leadingIcon = Icons.Filled.Person,
                 keyboardOptions = KeyboardOptions(
@@ -102,10 +102,10 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             ValidatedTextField(
-                value = registerForm.identificacion,
-                onValueChange = { viewModel.updateRegisterIdentificacion(it) },
-                label = "RUT (Sín guión ni puntos)",
-                error = registerForm.identificacionError,
+                value = registerForm.rut,
+                onValueChange = { viewModel.updateRegisterrut(it) },
+                label = "RUT",
+                error = registerForm.rutError,
                 leadingIcon = Icons.Filled.Badge,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -177,7 +177,6 @@ fun RegisterScreen(
                 )
             )
 
-            // Mensaje de error general
             AnimatedVisibility(
                 visible = uiState.error != null,
                 enter = fadeIn() + expandVertically(),

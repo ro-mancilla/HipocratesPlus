@@ -127,7 +127,6 @@ fun AppointmentHistoryScreen(
         }
     }
 
-    // Diálogo de filtros
     if (showFilterDialog) {
         FilterDialog(
             currentFilter = statusFilter,

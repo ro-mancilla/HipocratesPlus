@@ -42,11 +42,11 @@ android {
 
 dependencies {
 
-    //Agrego las dependencias para poder trabajar con preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("com.google.code.gson:gson:2.10.1")
 
-    // Desugaring para soportar Java 8+ Time API en API 24+
+    implementation("com.itextpdf:itext7-core:7.2.5")
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
 

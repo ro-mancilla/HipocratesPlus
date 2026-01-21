@@ -1,6 +1,7 @@
 package com.example.hipocrates.views
 
-import androidx.compose.animation.*
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,11 +12,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
+import com.example.hipocrates.model.Appointment
 import com.example.hipocrates.model.AppointmentStatus
+import com.example.hipocrates.utils.PdfGenerator
 import com.example.hipocrates.viewmodel.AppViewModel
 import com.example.hipocrates.views.components.*
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -26,6 +32,7 @@ fun AppointmentDetailScreen(
     appointmentId: String,
     onNavigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val appointment = remember(uiState.appointments, appointmentId) {
         uiState.appointments.find { it.id == appointmentId }
@@ -74,6 +81,13 @@ fun AppointmentDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        shareAppointmentAsPdf(context, appointment, uiState.currentUser?.nombre ?: "Paciente", snackbarHostState)
+                    }) {
+                        Icon(Icons.Filled.Share, contentDescription = "Compartir")
                     }
                 }
             )
@@ -148,7 +162,6 @@ fun AppointmentDetailScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Motivo
             DetailCard(
                 icon = Icons.Filled.Description,
                 title = "Motivo de consulta",
@@ -222,7 +235,7 @@ fun AppointmentDetailScreen(
             confirmText = "Sí",
             dismissText = "No",
             onConfirm = {
-                viewModel.cancelAppointment(appointmentId)
+                viewModel.cancelarAppointment(appointmentId)
                 showCancelDialog = false
             },
             onDismiss = { showCancelDialog = false }
@@ -231,12 +244,12 @@ fun AppointmentDetailScreen(
 
     if (showDeleteDialog) {
         ConfirmationDialog(
-            title = "Eliminar Cita",
+            title = "Eliminar cita",
             message = "¿Está seguro que desea eliminar su cita del historial? Esta acción es irreversible.",
             confirmText = "Sí",
             dismissText = "No",
             onConfirm = {
-                viewModel.deleteAppointment(appointmentId)
+                viewModel.eliminarAppointment(appointmentId)
                 showDeleteDialog = false
                 onNavigateBack()
             },
@@ -338,3 +351,51 @@ fun StatusChangeDialog(
         }
     )
 }
+
+private fun shareAppointmentAsPdf(
+    context: Context,
+    appointment: Appointment,
+    userName: String,
+    snackbarHostState: SnackbarHostState
+) {
+    try {
+        // Generate PDF
+        val pdfFile = PdfGenerator.generateAppointmentPdf(context, appointment, userName)
+
+        if (pdfFile == null) {
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+                snackbarHostState.showSnackbar("Error al generar el PDF")
+            }
+            return
+        }
+
+        // Create content URI using FileProvider
+        val fileUri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            pdfFile
+        )
+
+        // Create share intent
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_STREAM, fileUri)
+            putExtra(Intent.EXTRA_SUBJECT, "Cita Médica - ${appointment.especialidad.displayName}")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Información de cita médica de ${appointment.especialidad.displayName} con ${appointment.doctorNombre}"
+            )
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        // Start share sheet
+        context.startActivity(Intent.createChooser(shareIntent, "Compartir cita médica"))
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+            snackbarHostState.showSnackbar("Error al compartir: ${e.message}")
+        }
+    }
+}
+

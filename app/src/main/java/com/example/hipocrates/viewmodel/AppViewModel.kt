@@ -36,13 +36,13 @@ data class RegisterFormState(
     val confirmPassword: String = "",
     val nombre: String = "",
     val telefono: String = "",
-    val identificacion: String = "",
+    val rut: String = "",
     val emailError: String? = null,
     val passwordError: String? = null,
     val confirmPasswordError: String? = null,
     val nombreError: String? = null,
     val telefonoError: String? = null,
-    val identificacionError: String? = null
+    val rutError: String? = null
 )
 
 data class AppointmentFormState(
@@ -171,8 +171,8 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     fun login(onSuccess: () -> Unit) {
         val form = _loginForm.value
 
-        val emailError = validateEmail(form.email)
-        val passwordError = validatePassword(form.password)
+        val emailError = validarEmail(form.email)
+        val passwordError = validarPassword(form.password)
 
         if (emailError != null || passwordError != null) {
             _loginForm.update {
@@ -196,7 +196,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                             isLoading = false,
                             currentUserEmail = user.email,
                             currentUser = user,
-                            successMessage = "Bienvenido/a, ${user.nombre.ifEmpty { user.email }}"
+                            successMessage = "Iniciada la sesión."
                         )
                     }
                     _loginForm.value = LoginFormState() // Limpiar formulario
@@ -242,25 +242,25 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         _registerForm.update { it.copy(telefono = telefono, telefonoError = null) }
     }
 
-    fun updateRegisterIdentificacion(identificacion: String) {
-        _registerForm.update { it.copy(identificacion = identificacion, identificacionError = null) }
+    fun updateRegisterrut(rut: String) {
+        _registerForm.update { it.copy(rut = rut, rutError = null) }
     }
 
     fun register(onSuccess: () -> Unit) {
         val form = _registerForm.value
 
         // Validar formulario
-        val emailError = validateEmail(form.email)
-        val passwordError = validatePassword(form.password)
+        val emailError = validarEmail(form.email)
+        val passwordError = validarPassword(form.password)
         val confirmPasswordError = if (form.password != form.confirmPassword) {
             "Las contraseñas no coinciden"
         } else null
         val nombreError = if (form.nombre.isBlank()) "Ingrese su nombre completo" else null
-        val telefonoError = if (form.telefono.isBlank()) "Ingrese su número de teléfono" else null
-        val identificacionError = if (form.identificacion.isBlank()) "Ingrese su RUT" else null
+        val telefonoError = validarTelefono(form.telefono)
+        val rutError = validarRUT(form.rut)
 
         if (emailError != null || passwordError != null || confirmPasswordError != null ||
-            nombreError != null || telefonoError != null || identificacionError != null) {
+            nombreError != null || telefonoError != null || rutError != null) {
             _registerForm.update {
                 it.copy(
                     emailError = emailError,
@@ -268,7 +268,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                     confirmPasswordError = confirmPasswordError,
                     nombreError = nombreError,
                     telefonoError = telefonoError,
-                    identificacionError = identificacionError
+                    rutError = rutError
                 )
             }
             return
@@ -296,7 +296,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                 password = form.password,
                 nombre = form.nombre,
                 telefono = form.telefono,
-                identificacion = form.identificacion
+                rut = form.rut
             )
 
             users.add(newUser)
@@ -346,8 +346,8 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
             return
         }
 
-        val fechaError = validateFecha(form.fecha)
-        val horaError = validateHora(form.hora)
+        val fechaError = validarFecha(form.fecha)
+        val horaError = validarHora(form.hora)
         val especialidadError = if (form.especialidad == null) "Seleccione una especialidad" else null
         val doctorError = if (form.doctorId.isBlank()) "Seleccione un médico" else null
         val motivoError = if (form.motivo.isBlank()) "El motivo es requerido" else null
@@ -427,13 +427,13 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         }
     }
 
-    fun cancelAppointment(appointmentId: String) {
+    fun cancelarAppointment(appointmentId: String) {
         updateAppointmentStatus(appointmentId, AppointmentStatus.CANCELLED)
     }
 
-    fun deleteAppointment(appointmentId: String) {
+    fun eliminarAppointment(appointmentId: String) {
         viewModelScope.launch {
-            dataStoreManager.deleteAppointment(appointmentId)
+            dataStoreManager.eliminarAppointment(appointmentId)
             _uiState.update {
                 it.copy(successMessage = "Cita eliminada exitosamente.")
             }
@@ -441,15 +441,15 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     }
 
 
-    private fun validateEmail(email: String): String? {
+    private fun validarEmail(email: String): String? {
         return when {
             email.isBlank() -> "Ingrese un email"
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Email inválido"
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Ingrese un email válido"
             else -> null
         }
     }
 
-    private fun validatePassword(password: String): String? {
+    private fun validarPassword(password: String): String? {
         return when {
             password.isBlank() -> "Ingrese una contraseña"
             password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
@@ -457,7 +457,78 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         }
     }
 
-    private fun validateFecha(fecha: String): String? {
+    private fun validarTelefono(telefono: String): String? {
+        if (telefono.isBlank()) {
+            return "Ingrese un número de teléfono válido"
+        }
+
+        // Remover espacios y caracteres especiales
+        val cleanTelefono = telefono.replace(" ", "").replace("-", "").replace("+56", "").trim()
+
+        // Verificar que tenga exactamente 9 dígitos
+        if (cleanTelefono.length != 9) {
+            return "Ingrese un número de teléfono válido"
+        }
+
+        // Verificar que solo contenga dígitos
+        if (!cleanTelefono.all { it.isDigit() }) {
+            return "Ingrese un número de teléfono válido"
+        }
+
+        // Verificar que comience con 9
+        if (!cleanTelefono.startsWith("9")) {
+            return "Ingrese un número de teléfono válido"
+        }
+
+        return null
+    }
+
+    private fun validarRUT(rut: String): String? {
+        if (rut.isBlank()) {
+            return "Ingrese su RUT"
+        }
+
+        // Remover puntos y guiones si los hay
+        val cleanRut = rut.replace(".", "").replace("-", "").trim()
+
+        // Verificar longitud mínima (7 dígitos + 1 dígito verificador)
+        if (cleanRut.length < 8) {
+            return "Ingrese un RUT válido"
+        }
+
+        // Separar número y dígito verificador
+        val rutNumber = cleanRut.dropLast(1)
+        val verifierDigit = cleanRut.last().uppercaseChar()
+
+        // Verificar que la parte numérica contenga solo dígitos
+        if (!rutNumber.all { it.isDigit() }) {
+            return "Ingrese un RUT válido"
+        }
+
+        // Calcular dígito verificador
+        var sum = 0
+        var multiplier = 2
+        
+        for (i in rutNumber.length - 1 downTo 0) {
+            sum += rutNumber[i].digitToInt() * multiplier
+            multiplier = if (multiplier == 7) 2 else multiplier + 1
+        }
+
+        val remainder = sum % 11
+        val calculatedVerifier = when (11 - remainder) {
+            11 -> '0'
+            10 -> 'K'
+            else -> (11 - remainder).toString()[0]
+        }
+
+        if (verifierDigit != calculatedVerifier) {
+            return "Ingrese un RUT válido"
+        }
+
+        return null
+    }
+
+    private fun validarFecha(fecha: String): String? {
         return try {
             if (fecha.isBlank()) {
                 "Ingrese una fecha"
@@ -474,7 +545,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         }
     }
 
-    private fun validateHora(hora: String): String? {
+    private fun validarHora(hora: String): String? {
         return try {
             if (hora.isBlank()) {
                 "Ingrese una hora"
