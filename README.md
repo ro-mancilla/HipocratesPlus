@@ -1,8 +1,8 @@
 ![ic_launcher_hipocrates](https://github.com/user-attachments/assets/f01d7c87-464c-4b4c-848f-fc2e766668be)
 # Hipócrates+
-Hipócrates+ es una aplicación para Android desarrollada en Kotlin con Jetpack Compose para gestionar citas médicas para la clínica Hipócrates. La aplicación usa Material Design 3 (`libs.androidx.compose.material3`) con colores dinámicos y animaciones fluidas.
+Hipócrates+ es una aplicación para Android desarrollada en Kotlin con Jetpack Compose para gestionar citas médicas para la clínica Hipócrates. La aplicación usa Material Design 3 con colores dinámicos y animaciones fluidas (Navigation Compose).
 
-Se almacenan usuarios registrados, sesión actual y citas médicas mediante `DataStore`. Por ahora, la persistencia de datos es de forma local y pronto se traspasará a SQLite.
+Se almacenan usuarios registrados, sesión actual y citas médicas mediante DataStore. Por ahora, la persistencia de datos es de forma local y pronto se traspasará a SQLite.
 
 ### LoginScreen - Pantalla de autenticación
 
@@ -61,13 +61,13 @@ Se almacenan usuarios registrados, sesión actual y citas médicas mediante `Dat
 
 - Información completa de la cita seleccionada
 - Cambiar estado de la cita
-- Exportar a PDF
+- Exportar a PDF y compartir usando nativo
 - Eliminación de cita con confirmación
 
 ### ProfileScreen - Perfil
 
 <img width="270" height="600" alt="image" src="https://github.com/user-attachments/assets/d7a5b7d4-2851-4b5c-80c1-24b7fea4e16a" />
 
-• Información del usuario
-• Estadísticas de citas
-• Cerrar la sesión
+- Información del usuario
+- Estadísticas de citas
+- Cerrar la sesión
