@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 data class UiState(
@@ -305,10 +304,9 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
             _uiState.update {
                 it.copy(
                     isLoading = false,
-                    successMessage = "Registro exitoso. Ahora puedes iniciar sesión"
                 )
             }
-            _registerForm.value = RegisterFormState() // Limpiar formulario
+            _registerForm.value = RegisterFormState()
             onSuccess()
         }
     }
@@ -493,7 +491,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
 
         // Verificar longitud mínima (7 dígitos + 1 dígito verificador)
         if (cleanRut.length < 8) {
-            return "Ingrese un RUT válido"
+            return "Ingrese un válido"
         }
 
         // Separar número y dígito verificador

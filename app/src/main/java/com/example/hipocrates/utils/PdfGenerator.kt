@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter
 
 object PdfGenerator {
 
-    private const val PAGE_WIDTH = 595 // A4 width in points
-    private const val PAGE_HEIGHT = 842 // A4 height in points
+    private const val PAGE_WIDTH = 595
+    private const val PAGE_HEIGHT = 842
     private const val MARGIN = 50f
 
     fun generateAppointmentPdf(context: Context, appointment: Appointment, userName: String): File? {
@@ -26,7 +26,6 @@ object PdfGenerator {
 
             var yPosition = MARGIN
 
-            // Title
             val titlePaint = Paint().apply {
                 color = Color.rgb(67, 164, 67)
                 textSize = 24f
@@ -35,7 +34,6 @@ object PdfGenerator {
             canvas.drawText("Hipócrates+", MARGIN, yPosition, titlePaint)
             yPosition += 40f
 
-            // Document title
             val headerPaint = Paint().apply {
                 color = Color.BLACK
                 textSize = 20f
@@ -44,7 +42,6 @@ object PdfGenerator {
             canvas.drawText("Cita médica", MARGIN, yPosition, headerPaint)
             yPosition += 20f
 
-            // Divider line
             val linePaint = Paint().apply {
                 color = Color.LTGRAY
                 strokeWidth = 2f
@@ -52,7 +49,6 @@ object PdfGenerator {
             canvas.drawLine(MARGIN, yPosition, PAGE_WIDTH - MARGIN, yPosition, linePaint)
             yPosition += 30f
 
-            // Regular text paint
             val labelPaint = Paint().apply {
                 color = Color.DKGRAY
                 textSize = 12f
@@ -64,31 +60,26 @@ object PdfGenerator {
                 textSize = 14f
             }
 
-            // Patient info
             canvas.drawText("Paciente:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             canvas.drawText(userName, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Status
             canvas.drawText("Estado:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             canvas.drawText(appointment.estado.displayName, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Specialty
             canvas.drawText("Especialidad:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             canvas.drawText(appointment.especialidad.displayName, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Doctor
             canvas.drawText("Médico:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             canvas.drawText(appointment.doctorNombre, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Date
             canvas.drawText("Fecha:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             val formattedDate = try {
@@ -100,13 +91,11 @@ object PdfGenerator {
             canvas.drawText(formattedDate, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Time
             canvas.drawText("Hora:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             canvas.drawText(appointment.hora, MARGIN + 20f, yPosition, valuePaint)
             yPosition += 35f
 
-            // Reason
             canvas.drawText("Motivo de consulta:", MARGIN, yPosition, labelPaint)
             yPosition += 20f
             val motivoLines = splitTextToFit(appointment.motivo, valuePaint, PAGE_WIDTH - MARGIN * 2 - 20f)
@@ -116,7 +105,6 @@ object PdfGenerator {
             }
             yPosition += 15f
 
-            // Notes
             if (appointment.notas.isNotBlank()) {
                 canvas.drawText("Notas adicionales:", MARGIN, yPosition, labelPaint)
                 yPosition += 20f
@@ -128,7 +116,6 @@ object PdfGenerator {
                 yPosition += 15f
             }
 
-            // Footer
             yPosition = PAGE_HEIGHT - MARGIN - 20f
             canvas.drawLine(MARGIN, yPosition - 10f, PAGE_WIDTH - MARGIN, yPosition - 10f, linePaint)
             val footerPaint = Paint().apply {

@@ -11,26 +11,16 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-/*
-* DataStore es "SINGLETON"
-* En este caso usaré un archivo de Preferencias:
-*   No es una Base de Datos
-*   No tiene tablas
-*   Es un archivo plano
-* */
 val Context.dataStore by preferencesDataStore(name = "hipocrates_preferences")
 
 class DataStoreManager(private val context: Context) {
     private val gson = Gson()
 
-    // Keys para almacenar información
     private val USER_KEY = stringPreferencesKey("usuarios")
     private val CURRENT_USER_KEY = stringPreferencesKey("current_user")
     private val APPOINTMENTS_KEY = stringPreferencesKey("appointments")
 
-    // ============ GESTIÓN DE USUARIOS ============
 
-    // Guardar lista de usuarios registrados
     suspend fun saveUsers(users: List<Usuario>) {
         val json = gson.toJson(users)
         context.dataStore.edit { prefs ->
@@ -38,7 +28,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Obtener lista de usuarios registrados
     fun getUsers(): Flow<List<Usuario>> {
         return context.dataStore.data.map { prefs ->
             val json = prefs[USER_KEY] ?: "[]"
@@ -47,7 +36,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Guardar usuario actual en sesión
     suspend fun saveCurrentUser(email: String?) {
         context.dataStore.edit { prefs ->
             if (email != null) {
@@ -58,16 +46,12 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Obtener usuario actual en sesión
     fun getCurrentUser(): Flow<String?> {
         return context.dataStore.data.map { prefs ->
             prefs[CURRENT_USER_KEY]
         }
     }
 
-    // ============ GESTIÓN DE CITAS ============
-
-    // Guardar todas las citas
     suspend fun saveAppointments(appointments: List<Appointment>) {
         val json = gson.toJson(appointments)
         context.dataStore.edit { prefs ->
@@ -75,7 +59,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Obtener todas las citas
     fun getAppointments(): Flow<List<Appointment>> {
         return context.dataStore.data.map { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"
@@ -84,7 +67,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Agregar una nueva cita
     suspend fun addAppointment(appointment: Appointment) {
         context.dataStore.edit { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"
@@ -95,7 +77,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Actualizar una cita existente
     suspend fun updateAppointment(updatedAppointment: Appointment) {
         context.dataStore.edit { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"
@@ -109,7 +90,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Eliminar una cita
     suspend fun eliminarAppointment(appointmentId: String) {
         context.dataStore.edit { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"

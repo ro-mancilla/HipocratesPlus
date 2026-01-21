@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Inicializar DataStoreManager y ViewModel
         val dataStoreManager = DataStoreManager(applicationContext)
         val viewModel = AppViewModel(dataStoreManager)
 
@@ -48,7 +47,6 @@ fun HipocratesPlus(
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
-    // Determinar la pantalla inicial basada en la sesión del usuario
     var startDestination by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {

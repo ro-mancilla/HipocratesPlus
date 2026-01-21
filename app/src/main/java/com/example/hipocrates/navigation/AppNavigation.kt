@@ -12,7 +12,6 @@ import androidx.navigation.navArgument
 import com.example.hipocrates.viewmodel.AppViewModel
 import com.example.hipocrates.views.*
 
-// Rutas de navegación
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")

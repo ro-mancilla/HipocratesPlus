@@ -1,8 +1,5 @@
 package com.example.hipocrates.model
 
-import java.time.LocalDate
-import java.time.LocalTime
-
 data class Usuario(
     val email: String,
     val password: String,
