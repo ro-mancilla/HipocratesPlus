@@ -249,7 +249,7 @@ fun AppointmentDetailScreen(
             confirmText = "Sí",
             dismissText = "No",
             onConfirm = {
-                viewModel.eliminarAppointment(appointmentId)
+                viewModel.deleteAppointment(appointmentId)
                 showDeleteDialog = false
                 onNavigateBack()
             },

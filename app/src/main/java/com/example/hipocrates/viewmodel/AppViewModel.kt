@@ -429,9 +429,9 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         updateAppointmentStatus(appointmentId, AppointmentStatus.CANCELLED)
     }
 
-    fun eliminarAppointment(appointmentId: String) {
+    fun deleteAppointment(appointmentId: String) {
         viewModelScope.launch {
-            dataStoreManager.eliminarAppointment(appointmentId)
+            dataStoreManager.deleteAppointment(appointmentId)
             _uiState.update {
                 it.copy(successMessage = "Cita eliminada exitosamente.")
             }

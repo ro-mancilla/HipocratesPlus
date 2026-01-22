@@ -90,7 +90,7 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun eliminarAppointment(appointmentId: String) {
+    suspend fun deleteAppointment(appointmentId: String) {
         context.dataStore.edit { prefs ->
             val json = prefs[APPOINTMENTS_KEY] ?: "[]"
             val type = object : TypeToken<List<Appointment>>() {}.type
