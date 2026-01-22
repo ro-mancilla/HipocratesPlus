@@ -42,7 +42,6 @@ fun AppointmentDetailScreen(
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showStatusDialog by remember { mutableStateOf(false) }
 
-    // Manejar mensajes
     LaunchedEffect(uiState.successMessage) {
         uiState.successMessage?.let { message ->
             snackbarHostState.showSnackbar(message)
@@ -135,7 +134,6 @@ fun AppointmentDetailScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Fecha y hora
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -359,7 +357,6 @@ private fun shareAppointmentAsPdf(
     snackbarHostState: SnackbarHostState
 ) {
     try {
-        // Generate PDF
         val pdfFile = PdfGenerator.generateAppointmentPdf(context, appointment, userName)
 
         if (pdfFile == null) {
@@ -369,14 +366,12 @@ private fun shareAppointmentAsPdf(
             return
         }
 
-        // Create content URI using FileProvider
         val fileUri = FileProvider.getUriForFile(
             context,
             "${context.packageName}.fileprovider",
             pdfFile
         )
 
-        // Create share intent
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "application/pdf"
             putExtra(Intent.EXTRA_STREAM, fileUri)
@@ -388,7 +383,6 @@ private fun shareAppointmentAsPdf(
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        // Start share sheet
         context.startActivity(Intent.createChooser(shareIntent, "Compartir cita médica"))
 
     } catch (e: Exception) {

@@ -26,8 +26,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-// ============ VALIDATED TEXT FIELD ============
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ValidatedTextField(
@@ -96,8 +94,6 @@ fun ValidatedTextField(
         }
     }
 }
-
-// ============ DATE PICKER FIELD ============
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -200,8 +196,6 @@ fun DatePickerField(
     }
 }
 
-// ============ TIME PICKER FIELD ============
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerField(
@@ -301,8 +295,6 @@ fun TimePickerField(
         )
     }
 }
-
-// ============ APPOINTMENT CARD ============
 
 @Composable
 fun AppointmentCard(
@@ -405,8 +397,6 @@ fun AppointmentCard(
     }
 }
 
-// ============ STATUS CHIP ============
-
 @Composable
 fun StatusChip(
     status: AppointmentStatus,
@@ -443,8 +433,6 @@ fun StatusChip(
     }
 }
 
-// ============ EMPTY STATE VIEW ============
-
 @Composable
 fun EmptyStateView(
     icon: ImageVector,
@@ -472,8 +460,6 @@ fun EmptyStateView(
         )
     }
 }
-
-// ============ LOADING VIEW ============
 
 @Composable
 fun LoadingView(
