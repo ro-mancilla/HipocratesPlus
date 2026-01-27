@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hipocrates.data.DataStoreManager
+import com.example.hipocrates.data.WeatherRepository
 import com.example.hipocrates.model.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,7 +20,10 @@ data class UiState(
     val filteredAppointments: List<Appointment> = emptyList(),
     val selectedAppointment: Appointment? = null,
     val error: String? = null,
-    val successMessage: String? = null
+    val successMessage: String? = null,
+    val weatherData: WeatherData? = null,
+    val weatherLoading: Boolean = false,
+    val weatherError: String? = null
 )
 
 data class LoginFormState(
@@ -60,6 +64,8 @@ data class AppointmentFormState(
 
 class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
 
+    private val weatherRepository = WeatherRepository.getInstance()
+
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -81,6 +87,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
     init {
         loadCurrentUser()
         observeAppointments()
+        loadWeather()
     }
 
     private fun loadCurrentUser() {
@@ -126,6 +133,36 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                 }
             }
         }
+    }
+
+    private fun loadWeather() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(weatherLoading = true, weatherError = null) }
+            val result = weatherRepository.getValparaisoWeather()
+            result.fold(
+                onSuccess = { weatherData ->
+                    _uiState.update {
+                        it.copy(
+                            weatherData = weatherData,
+                            weatherLoading = false,
+                            weatherError = null
+                        )
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(
+                            weatherLoading = false,
+                            weatherError = "No se pudo cargar el clima"
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+    fun refreshWeather() {
+        loadWeather()
     }
 
     private fun filterAppointments(
