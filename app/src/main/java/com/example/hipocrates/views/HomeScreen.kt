@@ -128,7 +128,6 @@ fun HomeScreen(
                 )
             }
 
-            // Clima para Valparaiso
             WeatherCard(
                 weatherData = uiState.weatherData,
                 isLoading = uiState.weatherLoading,
@@ -139,7 +138,6 @@ fun HomeScreen(
 
             Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp))
 
-            // Sección de próximas citas
             Text(
                 text = "Próximas citas",
                 style = MaterialTheme.typography.titleLarge,

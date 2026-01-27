@@ -27,6 +27,7 @@ fun WeatherCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
+
     ) {
         Column(
             modifier = Modifier
@@ -36,19 +37,13 @@ fun WeatherCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.LocationOn,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
                     Text(
-                        text = "Valparaíso, Chile",
+                        text = "Clínica Hipócrates, Valparaíso",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -57,6 +52,7 @@ fun WeatherCard(
 
                 IconButton(
                     onClick = onRefresh,
+                    Modifier.size(32.dp),
                     enabled = !isLoading
                 ) {
                     Icon(
@@ -67,8 +63,6 @@ fun WeatherCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
             AnimatedVisibility(
                 visible = isLoading,
                 enter = fadeIn(),
@@ -77,15 +71,15 @@ fun WeatherCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    //verticalAlignment = Alignment.CenterVertically
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Cargando clima...",
+                        text = "Actualizando...",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -123,7 +117,6 @@ fun WeatherCard(
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Temperature display
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -139,6 +132,7 @@ fun WeatherCard(
                                     modifier = Modifier.size(40.dp),
                                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
+
                                 Column {
                                     Text(
                                         text = "${weather.temperature.toInt()}°C",
@@ -149,8 +143,7 @@ fun WeatherCard(
                                     Text(
                                         text = weather.weatherDescription,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                                    )
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer)
                                 }
                             }
                         }
@@ -164,12 +157,12 @@ fun WeatherCard(
 
 private fun getWeatherIcon(weatherCode: Int): androidx.compose.ui.graphics.vector.ImageVector {
     return when (weatherCode) {
-        0 -> Icons.Filled.WbSunny // Clear sky
-        1, 2, 3 -> Icons.Filled.Cloud // Partly cloudy
-        45, 48 -> Icons.Filled.Cloud // Fog
-        51, 53, 55, 61, 63, 65, 80, 81, 82 -> Icons.Filled.WaterDrop // Rain
-        71, 73, 75, 77, 85, 86 -> Icons.Filled.AcUnit // Snow
-        95, 96, 99 -> Icons.Filled.Thunderstorm // Thunderstorm
+        0 -> Icons.Filled.WbSunny
+        1, 2, 3 -> Icons.Filled.Cloud
+        45, 48 -> Icons.Filled.Cloud
+        51, 53, 55, 61, 63, 65, 80, 81, 82 -> Icons.Filled.WaterDrop
+        71, 73, 75, 77, 85, 86 -> Icons.Filled.AcUnit
+        95, 96, 99 -> Icons.Filled.Thunderstorm
         else -> Icons.Filled.Cloud
     }
 }

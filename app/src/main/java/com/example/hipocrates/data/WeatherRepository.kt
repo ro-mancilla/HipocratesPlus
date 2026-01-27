@@ -5,7 +5,7 @@ import com.example.hipocrates.model.getWeatherDescription
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class WeatherRepository(private val apiService: WeatherApiService) {
+class WeatherRepository(private val apiService: WeatherApi) {
 
     // Coordenadas para Valparaiso
     private val valparaisoLatitude = -33.0472
@@ -36,7 +36,7 @@ class WeatherRepository(private val apiService: WeatherApiService) {
 
         fun getInstance(): WeatherRepository {
             return instance ?: synchronized(this) {
-                instance ?: WeatherRepository(WeatherApiService.create()).also { instance = it }
+                instance ?: WeatherRepository(WeatherApi.create()).also { instance = it }
             }
         }
     }

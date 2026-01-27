@@ -6,7 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface WeatherApiService {
+// https://open-meteo.com/en/docs
+
+interface WeatherApi {
     @GET("v1/forecast")
     suspend fun getCurrentWeather(
         @Query("latitude") latitude: Double,
@@ -18,13 +20,13 @@ interface WeatherApiService {
     companion object {
         private const val BASE_URL = "https://api.open-meteo.com/"
 
-        fun create(): WeatherApiService {
+        fun create(): WeatherApi {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-            return retrofit.create(WeatherApiService::class.java)
+            return retrofit.create(WeatherApi::class.java)
         }
     }
 }

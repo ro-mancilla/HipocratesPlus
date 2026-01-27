@@ -153,7 +153,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
                     _uiState.update {
                         it.copy(
                             weatherLoading = false,
-                            weatherError = "No se pudo cargar el clima"
+                            weatherError = "Error"
                         )
                     }
                 }
