@@ -385,7 +385,7 @@ fun AppointmentCard(
             }
 
             if (appointment.motivo.isNotBlank()) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = appointment.motivo,
                     style = MaterialTheme.typography.bodySmall,

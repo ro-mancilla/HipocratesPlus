@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.hipocrates.model.WeatherData
 
@@ -79,7 +81,7 @@ fun WeatherCard(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Actualizando...",
+                        text = "",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -132,7 +134,7 @@ fun WeatherCard(
                                     modifier = Modifier.size(40.dp),
                                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
-
+                                Spacer(modifier = Modifier.height(16.dp))
                                 Column {
                                     Text(
                                         text = "${weather.temperature.toInt()}°C",
@@ -141,12 +143,21 @@ fun WeatherCard(
                                         color = MaterialTheme.colorScheme.onSecondaryContainer
                                     )
                                     Text(
-                                        text = weather.weatherDescription,
+                                        text = " ${weather.weatherDescription}",
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSecondaryContainer)
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "Powered by Open-Meteo",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
                 }
             }
