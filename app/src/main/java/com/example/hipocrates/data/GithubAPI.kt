@@ -7,7 +7,7 @@ import retrofit2.http.GET
 /**
  * REST API interface for fetching doctors from GitHub
  */
-interface GithubDoctorsAPI {
+interface GithubAPI {
 
     /**
      * Get all doctors and specialties from GitHub JSON file

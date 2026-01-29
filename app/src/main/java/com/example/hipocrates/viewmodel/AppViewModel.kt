@@ -4,7 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hipocrates.data.DataStoreManager
-import com.example.hipocrates.data.GithubDoctorsRepository
+import com.example.hipocrates.data.GithubRepository
 import com.example.hipocrates.data.WeatherRepository
 import com.example.hipocrates.model.*
 import kotlinx.coroutines.flow.*
@@ -69,7 +69,7 @@ data class AppointmentFormState(
 class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
 
     private val weatherRepository = WeatherRepository.getInstance()
-    private val doctorsRepository = GithubDoctorsRepository.getInstance()
+    private val doctorsRepository = GithubRepository.getInstance()
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -633,7 +633,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         viewModelScope.launch {
             _uiState.update { it.copy(doctorsLoading = true, doctorsError = null) }
 
-            val result = doctorsRepository.getDoctorsBySpecialty(specialty)
+            val result = doctorsRepository.getDoctorBySpecialty(specialty)
 
             result.fold(
                 onSuccess = { doctors ->
