@@ -8,16 +8,16 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GithubDoctorsRepository {
+class GithubRepository {
 
-    private val api: GithubDoctorsAPI
+    private val api: GithubAPI
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        api = retrofit.create(GithubDoctorsAPI::class.java)
+        api = retrofit.create(GithubAPI::class.java)
     }
 
     suspend fun getAllDoctors(): Result<List<Doctor>> = withContext(Dispatchers.IO) {
@@ -35,7 +35,7 @@ class GithubDoctorsRepository {
         }
     }
 
-    suspend fun getDoctorsBySpecialty(specialty: MedicalSpecialty): Result<List<Doctor>> = withContext(Dispatchers.IO) {
+    suspend fun getDoctorBySpecialty(specialty: MedicalSpecialty): Result<List<Doctor>> = withContext(Dispatchers.IO) {
         try {
             val response = api.getDoctorsFromGithub()
 
@@ -52,11 +52,6 @@ class GithubDoctorsRepository {
         }
     }
 
-    /**
-     * Find a doctor by ID
-     * @param id The doctor ID
-     * @return Result with doctor or error
-     */
     suspend fun getDoctorById(id: String): Result<Doctor?> = withContext(Dispatchers.IO) {
         try {
             val response = api.getDoctorsFromGithub()
@@ -76,11 +71,11 @@ class GithubDoctorsRepository {
 
     companion object {
         @Volatile
-        private var INSTANCE: GithubDoctorsRepository? = null
+        private var INSTANCE: GithubRepository? = null
 
-        fun getInstance(): GithubDoctorsRepository {
+        fun getInstance(): GithubRepository {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: GithubDoctorsRepository().also { INSTANCE = it }
+                INSTANCE ?: GithubRepository().also { INSTANCE = it }
             }
         }
     }
