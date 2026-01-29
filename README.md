@@ -41,7 +41,7 @@ Se almacenan usuarios registrados, sesión actual y citas médicas mediante Data
 <img width="270" height="600" alt="image" src="https://github.com/user-attachments/assets/99b4070c-d5e1-4e6e-8af7-ce7d7ae3fe8f" />
 
 - Selección de especialidad
-- Selección de doctor
+- Lista de doctores mediante REST
 - Android Date Picker para seleccionar fecha
 - Android Time Picker para seleccionar hora
 - Campo de motivo consulta
