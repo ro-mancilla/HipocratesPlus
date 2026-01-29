@@ -84,3 +84,38 @@ object DoctorsRepository {
         return doctors.find { it.id == id }
     }
 }
+
+data class WeatherResponse(
+    val latitude: Double,
+    val longitude: Double,
+    val current: CurrentWeather
+)
+
+data class CurrentWeather(
+    val temperature_2m: Double,
+    val weathercode: Int
+)
+
+data class WeatherData(
+    val temperature: Double,
+    val weatherCode: Int,
+    val weatherDescription: String
+)
+
+fun getWeatherDescription(code: Int): String {
+    return when (code) {
+        0 -> "Despejado"
+        1, 2, 3 -> "Parcialmente nublado"
+        45, 48 -> "Niebla"
+        51, 53, 55 -> "Llovizna"
+        61, 63, 65 -> "Lluvia"
+        71, 73, 75 -> "Nieve"
+        77 -> "Nieve granulada"
+        80, 81, 82 -> "Chubascos"
+        85, 86 -> "Chubascos de nieve"
+        95 -> "Tormenta"
+        96, 99 -> "Tormenta con granizo"
+        else -> "Desconocido"
+    }
+}
+

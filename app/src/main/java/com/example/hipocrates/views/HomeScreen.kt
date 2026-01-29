@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,7 +108,6 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Tarjetas de acceso rápido
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,7 +128,16 @@ fun HomeScreen(
                 )
             }
 
-            Divider(modifier = Modifier.padding(horizontal = 16.dp))
+            // Clima para Valparaiso
+            WeatherCard(
+                weatherData = uiState.weatherData,
+                isLoading = uiState.weatherLoading,
+                error = uiState.weatherError,
+                onRefresh = { viewModel.refreshWeather() },
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp))
 
             // Sección de próximas citas
             Text(

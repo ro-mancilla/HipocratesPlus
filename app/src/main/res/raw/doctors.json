@@ -1,0 +1,225 @@
+{
+  "success": true,
+  "timestamp": "2026-01-28T00:00:00Z",
+  "data": {
+    "doctors": [
+      {
+        "id": "1",
+        "nombre": "Dr. Juan Pérez",
+        "especialidad": "GENERAL",
+        "especialidadDisplayName": "Medicina General",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "2",
+        "nombre": "Dra. María González",
+        "especialidad": "GENERAL",
+        "especialidadDisplayName": "Medicina General",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "3",
+        "nombre": "Dr. Carlos Ramírez",
+        "especialidad": "CARDIOLOGY",
+        "especialidadDisplayName": "Cardiología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "4",
+        "nombre": "Dra. Ana Martínez",
+        "especialidad": "CARDIOLOGY",
+        "especialidadDisplayName": "Cardiología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "5",
+        "nombre": "Dr. Luis Fernández",
+        "especialidad": "DERMATOLOGY",
+        "especialidadDisplayName": "Dermatología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "6",
+        "nombre": "Dra. Patricia López",
+        "especialidad": "DERMATOLOGY",
+        "especialidadDisplayName": "Dermatología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "7",
+        "nombre": "Dr. Roberto Sánchez",
+        "especialidad": "PEDIATRICS",
+        "especialidadDisplayName": "Pediatría",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "8",
+        "nombre": "Dra. Carmen Torres",
+        "especialidad": "PEDIATRICS",
+        "especialidadDisplayName": "Pediatría",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "9",
+        "nombre": "Dra. Elena Ruiz",
+        "especialidad": "GYNECOLOGY",
+        "especialidadDisplayName": "Ginecología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "10",
+        "nombre": "Dra. Isabel Moreno",
+        "especialidad": "GYNECOLOGY",
+        "especialidadDisplayName": "Ginecología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "11",
+        "nombre": "Dr. Miguel Díaz",
+        "especialidad": "TRAUMATOLOGY",
+        "especialidadDisplayName": "Traumatología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "12",
+        "nombre": "Dr. Francisco Romero",
+        "especialidad": "TRAUMATOLOGY",
+        "especialidadDisplayName": "Traumatología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "13",
+        "nombre": "Dra. Laura Jiménez",
+        "especialidad": "OPHTHALMOLOGY",
+        "especialidadDisplayName": "Oftalmología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "14",
+        "nombre": "Dr. Javier Navarro",
+        "especialidad": "OPHTHALMOLOGY",
+        "especialidadDisplayName": "Oftalmología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "15",
+        "nombre": "Dr. Antonio Herrera",
+        "especialidad": "PSYCHIATRY",
+        "especialidadDisplayName": "Psiquiatría",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "16",
+        "nombre": "Dra. Rosa Domínguez",
+        "especialidad": "PSYCHIATRY",
+        "especialidadDisplayName": "Psiquiatría",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "17",
+        "nombre": "Dr. Pedro Gil",
+        "especialidad": "DENTISTRY",
+        "especialidadDisplayName": "Odontología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "18",
+        "nombre": "Dra. Marta Vega",
+        "especialidad": "DENTISTRY",
+        "especialidadDisplayName": "Odontología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "19",
+        "nombre": "Dr. Alberto Serrano",
+        "especialidad": "NEUROLOGY",
+        "especialidadDisplayName": "Neurología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      },
+      {
+        "id": "20",
+        "nombre": "Dra. Cristina Blanco",
+        "especialidad": "NEUROLOGY",
+        "especialidadDisplayName": "Neurología",
+        "horarioInicio": "08:00",
+        "horarioFin": "18:00"
+      }
+    ],
+    "specialties": [
+      {
+        "name": "GENERAL",
+        "displayName": "Medicina General",
+        "doctorCount": 2
+      },
+      {
+        "name": "CARDIOLOGY",
+        "displayName": "Cardiología",
+        "doctorCount": 2
+      },
+      {
+        "name": "DERMATOLOGY",
+        "displayName": "Dermatología",
+        "doctorCount": 2
+      },
+      {
+        "name": "PEDIATRICS",
+        "displayName": "Pediatría",
+        "doctorCount": 2
+      },
+      {
+        "name": "GYNECOLOGY",
+        "displayName": "Ginecología",
+        "doctorCount": 2
+      },
+      {
+        "name": "TRAUMATOLOGY",
+        "displayName": "Traumatología",
+        "doctorCount": 2
+      },
+      {
+        "name": "OPHTHALMOLOGY",
+        "displayName": "Oftalmología",
+        "doctorCount": 2
+      },
+      {
+        "name": "PSYCHIATRY",
+        "displayName": "Psiquiatría",
+        "doctorCount": 2
+      },
+      {
+        "name": "DENTISTRY",
+        "displayName": "Odontología",
+        "doctorCount": 2
+      },
+      {
+        "name": "NEUROLOGY",
+        "displayName": "Neurología",
+        "doctorCount": 2
+      }
+    ]
+  },
+  "meta": {
+    "totalDoctors": 20,
+    "totalSpecialties": 10,
+    "version": "1.0"
+  }
+}
