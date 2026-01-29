@@ -3,9 +3,6 @@ package com.example.hipocrates.model.dto
 import com.example.hipocrates.model.Doctor
 import com.example.hipocrates.model.MedicalSpecialty
 
-/**
- * Response from the GitHub doctors.json API
- */
 data class DoctorsApiResponse(
     val success: Boolean,
     val timestamp: String,
@@ -39,9 +36,7 @@ data class MetaInfo(
     val version: String
 )
 
-/**
- * Extension function to convert API DTO to domain model
- */
+
 fun DoctorApiDTO.toDomainModel(): Doctor {
     return Doctor(
         id = this.id,

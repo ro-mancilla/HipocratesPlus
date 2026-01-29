@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 // Documentación https://open-meteo.com/en/docs
-// Agarrar JSON a través de Github y leerle sin necesidad de AWS
 
 interface WeatherAPI {
     @GET("v1/forecast")

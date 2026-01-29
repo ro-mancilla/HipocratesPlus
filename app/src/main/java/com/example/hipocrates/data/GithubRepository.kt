@@ -28,7 +28,7 @@ class GithubRepository {
                 val doctors = response.body()!!.data.doctors.map { it.toDomainModel() }
                 Result.success(doctors)
             } else {
-                Result.failure(Exception("Error al cargar médicos: ${response.code()}"))
+                Result.failure(Exception("Error al cargar médico: ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(Exception("Error de conexión: ${e.message}"))
