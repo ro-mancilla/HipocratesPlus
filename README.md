@@ -27,10 +27,11 @@ Se almacenan usuarios registrados, sesión actual y citas médicas mediante Data
 
 ### HomeScreen - Dashboard
 
-<img width="270" height="600" alt="image" src="https://github.com/user-attachments/assets/3ef77166-de2d-43eb-ae2a-d00a73c562e1" />
+<img width="270" height="600" alt="image" src="https://github.com/user-attachments/assets/ebfc8aed-1b7e-4845-8cb5-efbbdac2cf57" />
 
 - Bienvenida personalizada con nombre del usuario
 - Tarjetas de acceso rápido: Nueva cita y historial
+- Tarjeta del clima gracias a la API Open-Meteo
 - Lista de próximas citas ordenadas cronológicamente
 - Botón para crear cita rápida
 - Menú para ver perfil y cerrar sesión
