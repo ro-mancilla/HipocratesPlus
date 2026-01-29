@@ -6,9 +6,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-// https://open-meteo.com/en/docs
+// Documentación https://open-meteo.com/en/docs
+// Agarrar JSON a través de Github y leerle sin necesidad de AWS
 
-interface WeatherApi {
+interface WeatherAPI {
     @GET("v1/forecast")
     suspend fun getCurrentWeather(
         @Query("latitude") latitude: Double,
@@ -20,13 +21,13 @@ interface WeatherApi {
     companion object {
         private const val BASE_URL = "https://api.open-meteo.com/"
 
-        fun create(): WeatherApi {
+        fun create(): WeatherAPI {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-            return retrofit.create(WeatherApi::class.java)
+            return retrofit.create(WeatherAPI::class.java)
         }
     }
 }

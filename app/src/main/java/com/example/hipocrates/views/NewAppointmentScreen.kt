@@ -34,9 +34,6 @@ fun NewAppointmentScreen(
     val appointmentForm by viewModel.appointmentForm.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val availableDoctors = remember(appointmentForm.especialidad) {
-        viewModel.getDoctorsBySpecialty(appointmentForm.especialidad)
-    }
 
     // Manejar mensajes
     LaunchedEffect(uiState.successMessage) {
@@ -130,12 +127,39 @@ fun NewAppointmentScreen(
                 exit = fadeOut() + shrinkVertically()
             ) {
                 Column {
-                    DoctorDropdown(
-                        doctors = availableDoctors,
-                        selectedDoctorId = appointmentForm.doctorId,
-                        onDoctorSelected = { viewModel.updateAppointmentDoctor(it) },
-                        error = appointmentForm.doctorError
-                    )
+                    if (uiState.doctorsLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    } else if (uiState.doctorsError != null) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer
+                            )
+                        ) {
+                            Text(
+                                text = uiState.doctorsError ?: "Error al cargar médicos",
+                                modifier = Modifier.padding(16.dp),
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    } else {
+                        DoctorDropdown(
+                            doctors = uiState.availableDoctors,
+                            selectedDoctorId = appointmentForm.doctorId,
+                            onDoctorSelected = { viewModel.updateAppointmentDoctor(it) },
+                            error = appointmentForm.doctorError
+                        )
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }

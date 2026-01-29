@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hipocrates.data.DataStoreManager
+import com.example.hipocrates.data.GithubDoctorsRepository
 import com.example.hipocrates.data.WeatherRepository
 import com.example.hipocrates.model.*
 import kotlinx.coroutines.flow.*
@@ -23,7 +24,10 @@ data class UiState(
     val successMessage: String? = null,
     val weatherData: WeatherData? = null,
     val weatherLoading: Boolean = false,
-    val weatherError: String? = null
+    val weatherError: String? = null,
+    val availableDoctors: List<Doctor> = emptyList(),
+    val doctorsLoading: Boolean = false,
+    val doctorsError: String? = null
 )
 
 data class LoginFormState(
@@ -65,6 +69,7 @@ data class AppointmentFormState(
 class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
 
     private val weatherRepository = WeatherRepository.getInstance()
+    private val doctorsRepository = GithubDoctorsRepository.getInstance()
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -358,6 +363,7 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
 
     fun updateAppointmentEspecialidad(especialidad: MedicalSpecialty?) {
         _appointmentForm.update { it.copy(especialidad = especialidad, especialidadError = null, doctorId = "") }
+        getDoctorsBySpecialty(especialidad)
     }
 
     fun updateAppointmentDoctor(doctorId: String) {
@@ -404,41 +410,53 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         _uiState.update { it.copy(isLoading = true, error = null) }
 
         viewModelScope.launch {
-            val doctor = DoctorsRepository.getDoctorById(form.doctorId)
+            val doctorResult = doctorsRepository.getDoctorById(form.doctorId)
 
-            if (doctor == null) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Médico no encontrado"
+            doctorResult.fold(
+                onSuccess = { doctor ->
+                    if (doctor == null) {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = "Médico no encontrado"
+                            )
+                        }
+                        return@launch
+                    }
+
+                    val newAppointment = Appointment(
+                        id = UUID.randomUUID().toString(),
+                        userEmail = userEmail,
+                        fecha = form.fecha,
+                        hora = form.hora,
+                        especialidad = form.especialidad!!,
+                        doctorId = form.doctorId,
+                        doctorNombre = doctor.nombre,
+                        motivo = form.motivo,
+                        notas = form.notas,
+                        estado = AppointmentStatus.PENDING
                     )
+
+                    dataStoreManager.addAppointment(newAppointment)
+
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            successMessage = "Cita agendada exitosamente."
+                        )
+                    }
+                    _appointmentForm.value = AppointmentFormState() // Limpiar formulario
+                    onSuccess()
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = error.message ?: "Error al cargar datos del médico"
+                        )
+                    }
                 }
-                return@launch
-            }
-
-            val newAppointment = Appointment(
-                id = UUID.randomUUID().toString(),
-                userEmail = userEmail,
-                fecha = form.fecha,
-                hora = form.hora,
-                especialidad = form.especialidad!!,
-                doctorId = form.doctorId,
-                doctorNombre = doctor.nombre,
-                motivo = form.motivo,
-                notas = form.notas,
-                estado = AppointmentStatus.PENDING
             )
-
-            dataStoreManager.addAppointment(newAppointment)
-
-            _uiState.update {
-                it.copy(
-                    isLoading = false,
-                    successMessage = "Cita agendada exitosamente."
-                )
-            }
-            _appointmentForm.value = AppointmentFormState() // Limpiar formulario
-            onSuccess()
         }
     }
 
@@ -606,11 +624,37 @@ class AppViewModel(private val dataStoreManager: DataStoreManager) : ViewModel()
         _uiState.update { it.copy(successMessage = null) }
     }
 
-    fun getDoctorsBySpecialty(specialty: MedicalSpecialty?): List<Doctor> {
-        return if (specialty != null) {
-            DoctorsRepository.getDoctorsBySpecialty(specialty)
-        } else {
-            emptyList()
+    fun getDoctorsBySpecialty(specialty: MedicalSpecialty?) {
+        if (specialty == null) {
+            _uiState.update { it.copy(availableDoctors = emptyList()) }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(doctorsLoading = true, doctorsError = null) }
+
+            val result = doctorsRepository.getDoctorsBySpecialty(specialty)
+
+            result.fold(
+                onSuccess = { doctors ->
+                    _uiState.update {
+                        it.copy(
+                            availableDoctors = doctors,
+                            doctorsLoading = false,
+                            doctorsError = null
+                        )
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(
+                            availableDoctors = emptyList(),
+                            doctorsLoading = false,
+                            doctorsError = error.message
+                        )
+                    }
+                }
+            )
         }
     }
 
